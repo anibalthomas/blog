@@ -19,54 +19,81 @@
       <div class="box box-primary">
 
           <div class="box-body">
-            <div class="form-group">
+
+            <div class="form-group {{ $errors->has('title') ? 'has-error': ''}}">
+            {{-- <div class="form-group {{ $errors->has('title') ? si tiene un error : no tiene error}}"> --}}
               <label>Título de la publicación</label>
-              <input name="title" class="form-control" placeholder="Ingresa aqui el titulo de la publicación">
+              <input name="title"
+                     class="form-control"
+                     value="{{ old('title') }}"
+                     placeholder="Ingresa aqui el titulo de la publicación">
+              {!! $errors->first('title', '<span class="help-block">:message</span>')!!}
+                          {{-- nombre del cambio                  mensaje automatico --}}
             </div>
 
-            <div class="form-group">
-              <label>Contenido publicación</label>
-              <textarea rows="10" name="body" id="editor" class="form-control" placeholder="Ingresa el contenido completo de la publicación"></textarea>
-            </div>
-          </div>
+                    <div class="form-group {{ $errors->has('body') ? 'has-error': ''}}">
+                      <label>Contenido publicación</label>
+                      <textarea rows="10" name="body" id="editor" class="form-control" placeholder="Ingresa el contenido completo de la publicación">
+                        {{ old('body')}}
+                      </textarea>
+                      {!! $errors->first('body', '<span class="help-block">:message</span>')!!}
+                    </div>
+           </div>
       </div>
 
     </div>
     <div class="col-md-4">
       <div class="box box-primary">
         <div class="box-body">
-          <div class="form-group">
-                <label>Fecha de publicación:</label>
-                <div class="input-group date">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
+
+                <div class="form-group">
+                      <label>Fecha de publicación:</label>
+                      <div class="input-group date">
+                        <div class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                        </div>
+                        <input name="published_at"
+                               type="text"
+                               class="form-control pull-right"
+                               value="{{ old('published_at')}}"
+                               id="datepicker">
+                      </div>
                   </div>
-                  <input name="published_at" type="text" class="form-control pull-right" id="datepicker">
-                </div>
-            </div>
-            <div class="form-group">
+
+            <div class="form-group {{ $errors->has('category') ? 'has-error': ''}}">
                 <label> Categorías</label>
                   <select  name="category" class="form-control" name="">
                       <option value="">Selecciona una categoría</option>
                       @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}"
+                                {{ old('category') == $category->id ? 'selected' : ''}}
+                              >{{ $category->name }}</option>
                       @endforeach
                   </select>
+                  {!! $errors->first('category', '<span class="help-block">:message</span>')!!}
             </div>
-                <div class="form-group">
-                  <label>Etiquetas</label>
-                  <select name="tags[]" class="form-control select2"
-                          multiple="multiple"
-                          data-placeholder="Selecciona una o más etiquetas" style="width: 100%;">
-                    @foreach ($tags as $tag)
-                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-          <div class="form-group">
+
+                    <div class="form-group {{ $errors->has('tags') ? 'has-error': ''}}">
+                      <label>Etiquetas</label>
+                      <select name="tags[]" class="form-control select2"
+                              multiple="multiple"
+                              data-placeholder="Selecciona una o más etiquetas" style="width: 100%;">
+                        @foreach ($tags as $tag)
+                            <option {{ collect(old('tags'))->contains($tag->id) ? 'selected' : ''}}
+                                    value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        @endforeach
+                      </select>
+                      {!! $errors->first('tags', '<span class="help-block">:message</span>')!!}
+                    </div>
+
+          <div class="form-group {{ $errors->has('excerpt') ? 'has-error': ''}} ">
             <label>Extracto publicación</label>
-            <textarea name="excerpt" class="form-control" placeholder="Ingresa un extracto de la publicación"></textarea>
+            <textarea name="excerpt"
+                      class="form-control"
+                      placeholder="Ingresa un extracto de la publicación">{{ old('excerpt')}}</textarea>
+            {!! $errors->first('excerpt', '<span class="help-block">:message</span>')!!}
           </div>
+
           <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Guardar Publicación</button>
           </div>
