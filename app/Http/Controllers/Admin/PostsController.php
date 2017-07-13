@@ -17,17 +17,38 @@ class PostsController extends Controller
         return view('admin.posts.index', compact('posts'));
     }
 
-    public function create()
-    {
+    // public function create()
+    // {
+    //
+    //     $categories = Category::all();
+    //     $tags = tag::all();
+    //     return view('admin.posts.create', compact('categories', 'tags'));
+    // }
 
+        public function store(Request $request)
+        {
+          $this->validate($request, ['title' => 'required']);
+
+          $post = Post::create([
+            'title' => $request->get('title'),
+            'url' => str_slug($request->get('title')),
+          ]);
+
+          return redirect()->route('admin.posts.edit', $post);
+        }
+
+    public function edit(Post $post)
+    {
         $categories = Category::all();
         $tags = tag::all();
-        return view('admin.posts.create', compact('categories', 'tags'));
-
+        return view('admin.posts.edit', compact('categories', 'tags', 'post'));
 
     }
+
+
+
 // public function store(Request $request) {         return $request->all();   }
-public function store(Request $request)
+public function update(Post $post, Request $request)
 {
     $this->validate($request, [
       'title' => 'required',
@@ -37,8 +58,6 @@ public function store(Request $request)
       'tags' => 'required'
     ]);
   // return Post::create($request->all());
-
-  $post = new Post;
   $post->title = $request->get('title');
   $post->url = str_slug($request->get('title'));
   $post->body = $request->get('body');
@@ -48,9 +67,9 @@ public function store(Request $request)
   $post->category_id = $request->get('category');
   $post->save();
 
-  $post->tags()->attach($request->get('tags'));
+  $post->tags()->sync($request->get('tags'));
 
-  return back()->with('flash','Tu publicación ha sido creada');
+  return back()->with('flash','Tu publicación ha sido guardada');
 }
 
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Tag;
 use App\Post;
 use App\Category;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ class PostsTableSeeder extends Seeder
     {
           Post::truncate();
           Category::truncate();
+          Tag::truncate();
 
           $category = new Category;
           $category->name = "Categoria 1";
@@ -35,6 +37,8 @@ class PostsTableSeeder extends Seeder
           $post->category_id = 1;
           $post->save();
 
+          $post->tags()->attach(Tag::create(['name' => 'etiqueta 1']));
+
           $post = new Post;
           $post->title = "Mi segundo Post";
           $post->url = str_slug("Mi segundo Post");
@@ -43,6 +47,8 @@ class PostsTableSeeder extends Seeder
           $post->published_at = Carbon::now()->subDays(3);
           $post->category_id = 1;
           $post->save();
+
+          $post->tags()->attach(Tag::create(['name' => 'etiqueta 2']));
 
           $post = new Post;
           $post->title = "Mi tercer Post";
@@ -53,6 +59,8 @@ class PostsTableSeeder extends Seeder
           $post->category_id = 1;
           $post->save();
 
+          $post->tags()->attach(Tag::create(['name' => 'etiqueta 3']));
+
           $post = new Post;
           $post->title = "Mi cuarto Post";
           $post->url = str_slug("Mi cuarto Post");
@@ -62,14 +70,8 @@ class PostsTableSeeder extends Seeder
           $post->category_id = 2;
           $post->save();
 
-          $post = new Post;
-          $post->title = "Mi quinto Post";
-          $post->url = str_slug("Mi quinto Post");
-          $post->excerpt = "Extracto de mi quinto post";
-          $post->body = "<p>Contenido de mi quinto post</p>";
-          $post->published_at = Carbon::now();
-          $post->category_id = 2;
-          $post->save();
+          $post->tags()->attach(Tag::create(['name' => 'etiqueta 4']));
+
 
 
 

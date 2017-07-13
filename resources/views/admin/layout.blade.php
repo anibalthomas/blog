@@ -387,6 +387,6 @@ desired effect
 
 
 @stack('scripts')
-
+@include('admin.posts.create')
 </body>
 </html>
