@@ -140,15 +140,23 @@
 
 CKEDITOR.replace('editor')
 
-new Dropzone('.dropzone', {
+var myDropzone = new Dropzone('.dropzone', {
     url: '/admin/posts/{{ $post->url}}/photos',
+    // acceptedFiles: 'image/*',
+    // mxFilesize: 2,
+    // maxFiles: 1,
+    paramName: 'photo',
     headers: {
       'X-CSRF-TOKEN': '{{ csrf_token()}}'
     },
     dictDefaultMessage: 'Arrastra las fotos aqui para subirlas',
-    // maxFiles: 1,
     // dictMaxFilesExceeded: 'Limite de imagenes excedido'
 });
+
+myDropzone.on('error', function(file, res){
+  var msg = res.photo[0];
+  $('.dz-error-message:last > span').text(msg);
+})
 
 Dropzone.autoDiscover = false;
 
