@@ -188,7 +188,7 @@ desired effect
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="/adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
                   Alexander Pierce - Web Developer

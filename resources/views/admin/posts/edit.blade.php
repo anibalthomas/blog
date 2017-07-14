@@ -94,7 +94,11 @@
                       placeholder="Ingresa un extracto de la publicación">{{ old('excerpt', $post->excerpt)}}</textarea>
             {!! $errors->first('excerpt', '<span class="help-block">:message</span>')!!}
           </div>
+          <div class="form-group">
+            <div class="dropzone">
 
+            </div>
+          </div>
           <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Guardar Publicación</button>
           </div>
@@ -110,12 +114,15 @@
 @endsection
 
 @push('styles')
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/dropzone.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="/adminlte/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Select2 -->
 <link rel="stylesheet" href="/adminlte/select2/dist/css/select2.min.css">
 @endpush
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.js"></script>
+
   <!-- Select2 -->
 <script src="/adminlte/select2/dist/js/select2.full.min.js"></script>
 
@@ -132,6 +139,19 @@
 <script>
 
 CKEDITOR.replace('editor')
+
+new Dropzone('.dropzone', {
+    url: '/admin/posts/{{ $post->url}}/photos',
+    headers: {
+      'X-CSRF-TOKEN': '{{ csrf_token()}}'
+    },
+    dictDefaultMessage: 'Arrastra las fotos aqui para subirlas',
+    // maxFiles: 1,
+    // dictMaxFilesExceeded: 'Limite de imagenes excedido'
+});
+
+Dropzone.autoDiscover = false;
+
 </script>
 
 @endpush

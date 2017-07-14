@@ -69,7 +69,7 @@ public function update(Post $post, Request $request)
 
   $post->tags()->sync($request->get('tags'));
 
-  return back()->with('flash','Tu publicación ha sido guardada');
+  return redirect()->route('admin.posts.edit', $post)->with('flash','Tu publicación ha sido guardada');
 }
 
 
