@@ -12,6 +12,29 @@
 @endsection
 @section('content')
   <div class="row">          {{-- row y col-md-7 formato de columnas de 8 de 12 --}}
+      @if ($post->photos->count())
+
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-body">
+            <div class="row">
+                @foreach ($post->photos as $photo)
+                    <form method="POST" action="{{ route('admin.photos.destroy', $photo) }}">
+                      {{ method_field('DELETE') }}
+                        {{ csrf_field() }}
+
+                      <div class="col-md-2">
+                        <button class="btn btn-danger btn-xs" style="position: absolute"><i class="fa fa-remove"></i></button>
+                        <img class="img-responsive" src="{{ url($photo->url)}}">
+                      </div>
+                    </form>
+
+                @endforeach
+            </div>
+        </div>
+      </div>
+    </div>
+  @endif
     <form method="POST" action="{{ route('admin.posts.update', $post) }}">
       {{ csrf_field() }}  {{ method_field('PUT') }}
     <div class="col-md-8">
@@ -20,16 +43,16 @@
 
           <div class="box-body">
 
-            <div class="form-group {{ $errors->has('title') ? 'has-error': ''}}">
-            {{-- <div class="form-group {{ $errors->has('title') ? si tiene un error : no tiene error}}"> --}}
-              <label>Título de la publicación</label>
-              <input name="title"
-                     class="form-control"
-                     value="{{ old('title', $post->title) }}"
-                     placeholder="Ingresa aqui el titulo de la publicación">
-              {!! $errors->first('title', '<span class="help-block">:message</span>')!!}
-                          {{-- nombre del cambio                  mensaje automatico --}}
-            </div>
+                    <div class="form-group {{ $errors->has('title') ? 'has-error': ''}}">
+                    {{-- <div class="form-group {{ $errors->has('title') ? si tiene un error : no tiene error}}"> --}}
+                      <label>Título de la publicación</label>
+                      <input name="title"
+                             class="form-control"
+                             value="{{ old('title', $post->title) }}"
+                             placeholder="Ingresa aqui el titulo de la publicación">
+                      {!! $errors->first('title', '<span class="help-block">:message</span>')!!}
+                                  {{-- nombre del cambio                  mensaje automatico --}}
+                    </div>
 
                     <div class="form-group {{ $errors->has('body') ? 'has-error': ''}}">
                       <label>Contenido publicación</label>
@@ -108,6 +131,7 @@
     </div>
 
   </form>
+
   </div>
 
 
@@ -138,7 +162,8 @@
       <script src="/adminlte/ckeditor/ckeditor.js"></script>
 <script>
 
-CKEDITOR.replace('editor')
+CKEDITOR.replace('editor');
+CKEDITOR.config.height = 328;   // la altura de editor de texto
 
 var myDropzone = new Dropzone('.dropzone', {
     url: '/admin/posts/{{ $post->url}}/photos',
