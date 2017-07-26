@@ -29,10 +29,7 @@ class PostsController extends Controller
         {
           $this->validate($request, ['title' => 'required']);
 
-          $post = Post::create([
-            'title' => $request->get('title'),
-            'url' => str_slug($request->get('title')),
-          ]);
+          $post = Post::create($request->only('title'));
 
           return redirect()->route('admin.posts.edit', $post);
         }
@@ -59,7 +56,7 @@ public function update(Post $post, Request $request)
     ]);
   // return Post::create($request->all());
   $post->title = $request->get('title');
-  $post->url = str_slug($request->get('title'));
+
   $post->body = $request->get('body');
   $post->excerpt = $request->get('excerpt');
   $post->published_at = $request->has('published_at') ? Carbon::parse($request->get('published_at')) : null;
